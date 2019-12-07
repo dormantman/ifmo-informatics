@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+import string
+
 
 class Types:
     Key = 'key'
@@ -14,12 +16,10 @@ class Symbols:
     ArrayClose = ']'
     StringOpen = '"'
     StringClose = '"'
-    Space = ' '
-    NELL = '\n'
     Colon = ':'
     Comma = ','
     Slash = '\\'
-    Passed = (Space, NELL)
+    Passed = string.whitespace
     Split = (Colon, Comma, StringOpen)
     ElementSides = (ObjectOpen, ObjectClose, ArrayOpen, ArrayClose)
 
@@ -172,6 +172,9 @@ class Json2Xml:
                 self._close_object()
 
         elif types == Types.Key:
+            for punctuation in string.punctuation + string.whitespace:
+                word = word.replace(punctuation, '_')
+
             self._keys.append(word)
 
         elif types == Types.Element:

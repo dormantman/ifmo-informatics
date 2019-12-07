@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<XML>
+    <id>17047</id>
+    <label_translated>Pub \"hotel</label_translated>
+    <index_name>pub_hotel</index_name>
+    <label>
+        <en-GB>Pub hotel</en-GB>
+    </label>
+    <category>74</category>
+    <arrays>
+        <_1_>
+            <array>
+                <item>1</item>
+                <item>2</item>
+                <item>3</item>
+            </array>
+        </_1_>
+        <_2_>
+            <array>
+                <item>
+                </item>
+                <item>
+                    <abs>true</abs>
+                    <aaa>null</aaa>
+                </item>
+                <item>
+                </item>
+            </array>
+        </_2_>
+    </arrays>
+</XML>

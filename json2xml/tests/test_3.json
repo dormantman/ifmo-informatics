@@ -1,0 +1,24 @@
+{
+  "id": 17047,
+  "label_translated": "Pub \"hotel",
+  "index_name": "pub_hotel",
+  "label": {
+    "en-GB": "Pub hotel"
+  },
+  "category": 74,
+  "arrays": {
+    "1": [
+      1,
+      2,
+      3
+    ],
+    "2": [
+      {},
+      {
+        "abs": true,
+        "aaa": null
+      },
+      {}
+    ]
+  }
+}

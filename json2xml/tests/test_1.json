@@ -1,0 +1,65 @@
+{
+  "values": [
+    {
+      "id": 7976235394895570,
+      "lel": 1.2312,
+      "secret": "STR\"IN\\G",
+      "number": 1,
+      "date": {
+        "okay": "normal"
+      }
+    },
+    {
+      "id": 7976235394895570,
+      "secret": "STRING",
+      "number": 1,
+      "date": "06.05.19"
+    },
+    {
+      "id": 7976235394895570,
+      "secret": "STRING",
+      "number": 1,
+      "date": "06.05.19"
+    }
+  ],
+  "keys": [
+    1,
+    2,
+    [
+      1,
+      2
+    ]
+  ],
+  "data": {
+    "okay": 123,
+    "boolean": true,
+    "other": false,
+    "null": null
+  },
+  "arrays": [
+    [
+      [
+        [
+          [
+            [
+              [
+                {
+                  "1": []
+                }
+              ]
+            ]
+          ]
+        ]
+      ]
+    ]
+  ],
+  "dicts": {
+    "1": {
+      "2": {
+        "3": {
+          "4": {}
+        }
+      }
+    }
+  }
+}

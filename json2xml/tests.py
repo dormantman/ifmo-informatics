@@ -1,7 +1,9 @@
+import json
 import os
 import time
 
 from json2xml.converter.json2xml import Json2Xml
+from json2xml.converter.json2xml_standard import json2xml
 
 DEBUG = False
 ZIPPED = False
@@ -39,4 +41,9 @@ for filename in os.listdir(TESTS_FOLDER):
         time_diff = round(time.time() - time_for, 5)
         print('Successfully converted %s to %s for %s seconds' % (
             filename, name + '.xml', time_diff
-        ), end='\n\n')
+        ))
+
+        time_for = time.time()
+        json2xml(content)
+        time_diff = round(time.time() - time_for, 5)
+        print('Standard solution for %s seconds' % time_diff, end='\n\n')

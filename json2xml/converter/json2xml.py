@@ -25,7 +25,7 @@ class Symbols:
 
 
 class Json2Xml:
-    def __init__(self, item_name='item', debug_output=False):
+    def __init__(self, item_name='item', debug_output=False, zipped=False):
         self._write_data = None
         self._on_string = False
         self._virtual_structure = None
@@ -35,6 +35,9 @@ class Json2Xml:
 
         self.item_name = item_name
         self.debug_output = debug_output
+        self.zipped = zipped
+
+        self._nell = '' if zipped else '\n'
 
     @staticmethod
     def read_file(filename: str) -> str:
@@ -86,9 +89,11 @@ class Json2Xml:
             item_name = self.item_name.format(index=len(current_object) - 1)
 
             if isinstance(object, str):
-                self._write('<{item}>{obj}</{item}>\n'.format(item=item_name, obj=object))
+                self._write('<{item}>{obj}</{item}>{nell}'.format(
+                    item=item_name, obj=object, nell=self._nell
+                ))
             else:
-                self._write('<{item}>\n'.format(item=item_name))
+                self._write('<{item}>{nell}'.format(item=item_name, nell=self._nell))
 
         else:
             key = self._keys[-1]
@@ -96,13 +101,13 @@ class Json2Xml:
             current_object[key] = object
 
             if isinstance(object, str):
-                self._write('<{key}>{obj}</{key}>\n'.format(key=key, obj=object))
+                self._write('<{key}>{obj}</{key}>{nell}'.format(key=key, obj=object, nell=self._nell))
 
             else:
                 if key.isdigit():
                     key = '_%s_' % key
 
-                self._write('<%s>\n' % key)
+                self._write('<%s>%s' % (key, self._nell))
                 self._open_keys.append(key)
 
     def _add_index(self):
@@ -119,7 +124,7 @@ class Json2Xml:
 
         if isinstance(new_object, list):
             item_name = self.item_name.format(index=len(new_object) - 1)
-            self._write('</{item}>\n'.format(item=item_name))
+            self._write('</{item}>{nell}'.format(item=item_name, nell=self._nell))
 
     def _get_current_with_close(self):
         index = self._get_index()
@@ -147,15 +152,15 @@ class Json2Xml:
             if word == Symbols.ArrayOpen:
                 self._virtual_add([])
                 self._add_index()
-                self._write('<array>\n')
+                self._write('<array>{nell}'.format(nell=self._nell))
 
             elif word == Symbols.ArrayClose:
-                self._write('</array>\n')
+                self._write('</array>{nell}'.format(nell=self._nell))
                 self._close_object()
 
                 if isinstance(self._get_current_object(), dict) and self._open_keys:
                     key = self._open_keys.pop()
-                    self._write('</%s>\n' % key)
+                    self._write('</%s>%s' % (key, self._nell))
 
             elif word == Symbols.ObjectOpen:
                 self._virtual_add({})
@@ -167,7 +172,7 @@ class Json2Xml:
 
                     if isinstance(current_object, dict) and self._open_keys:
                         key = self._open_keys.pop()
-                        self._write('</%s>\n' % key)
+                        self._write('</%s>%s' % (key, self._nell))
 
                 self._close_object()
 
@@ -181,6 +186,9 @@ class Json2Xml:
             self._virtual_add(word)
 
     def _put_spaces(self):
+        if self.zipped:
+            return
+
         level = 0
         write_data = ''
 
@@ -207,7 +215,10 @@ class Json2Xml:
 
         self._write_data = write_data.rstrip()
 
-    def convert_json_to_xml(self, content: str):
+    def convert_json_to_xml(self, content: str, zipped=None):
+        if zipped is not None:
+            self.zipped = zipped
+
         self._write_data = ''
         self._virtual_structure = None
         self._keys = []
@@ -244,7 +255,8 @@ class Json2Xml:
 
         self._put_spaces()
 
-        self._write_data = '<?xml version="1.0" encoding="utf-8"?>\n' \
-                           '<XML>\n%s\n</XML>' % self._write_data
+        self._write_data = '<?xml version="1.0" encoding="utf-8"?>{nell}' \
+                           '<XML>{nell}{data}{nell}</XML>' \
+            .format(data=self._write_data, nell=self._nell)
 
         return self._write_data
